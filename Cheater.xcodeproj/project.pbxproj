@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E22E3D6329D031FD0038C38A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E22E3D6229D031FD0038C38A /* WebKit.framework */; };
+		E22E3D6629D03FC20038C38A /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = E22E3D6529D03FC20038C38A /* script.js */; };
 		E2CB592329CFB5C600138E7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CB592229CFB5C600138E7E /* AppDelegate.swift */; };
 		E2CB592529CFB5C600138E7E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CB592429CFB5C600138E7E /* SceneDelegate.swift */; };
 		E2CB592729CFB5C600138E7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CB592629CFB5C600138E7E /* ViewController.swift */; };
@@ -17,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E22E3D6229D031FD0038C38A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		E22E3D6429D032AC0038C38A /* Cheater.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cheater.entitlements; sourceTree = "<group>"; };
+		E22E3D6529D03FC20038C38A /* script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = script.js; sourceTree = "<group>"; };
 		E2CB591F29CFB5C600138E7E /* Cheater.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cheater.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2CB592229CFB5C600138E7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2CB592429CFB5C600138E7E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -33,17 +38,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E22E3D6329D031FD0038C38A /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E22E3D6129D031FD0038C38A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E22E3D6229D031FD0038C38A /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E2CB591629CFB5C600138E7E = {
 			isa = PBXGroup;
 			children = (
 				E2CB592129CFB5C600138E7E /* Cheater */,
 				E2CB592029CFB5C600138E7E /* Products */,
+				E22E3D6129D031FD0038C38A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +73,7 @@
 		E2CB592129CFB5C600138E7E /* Cheater */ = {
 			isa = PBXGroup;
 			children = (
+				E22E3D6429D032AC0038C38A /* Cheater.entitlements */,
 				E2CB592229CFB5C600138E7E /* AppDelegate.swift */,
 				E2CB592429CFB5C600138E7E /* SceneDelegate.swift */,
 				E2CB592629CFB5C600138E7E /* ViewController.swift */,
@@ -66,6 +82,7 @@
 				E2CB593029CFB5C700138E7E /* LaunchScreen.storyboard */,
 				E2CB593329CFB5C700138E7E /* Info.plist */,
 				E2CB592B29CFB5C600138E7E /* Cheater.xcdatamodeld */,
+				E22E3D6529D03FC20038C38A /* script.js */,
 			);
 			path = Cheater;
 			sourceTree = "<group>";
@@ -129,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2CB593229CFB5C700138E7E /* LaunchScreen.storyboard in Resources */,
+				E22E3D6629D03FC20038C38A /* script.js in Resources */,
 				E2CB592F29CFB5C700138E7E /* Assets.xcassets in Resources */,
 				E2CB592A29CFB5C600138E7E /* Main.storyboard in Resources */,
 			);
@@ -289,8 +307,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Cheater/Cheater.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WY4YHLR74E;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cheater/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -298,6 +318,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,8 +337,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Cheater/Cheater.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WY4YHLR74E;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Cheater/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -325,6 +348,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
