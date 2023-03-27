@@ -1,29 +1,66 @@
-const socket = new WebSocket('ws://192.168.178.74:8081/ws');
+const apiKey = "test";
+const client = "ios";
+// Define the WebSocket URL
+const serverURL = "wss://cheater-server-mbmu9.ondigitalocean.app/ws";
+//const serverURL = "ws://localhost:8080/ws";
 
-socket.addEventListener('open', function (event) {
-  console.log('WebSocket connection opened!');
-});
+// Create a WebSocket connection
+var socket;
 
-socket.addEventListener('message', function (event) {
-  console.log('Received message from server:', event.data);
-});
+async function sendTextToWS(text) {
+    // Check if the WebSocket connection is open before sending the message
+    if (socket.readyState === WebSocket.OPEN) {
+        // Create the JSON structure
+        const message = {
+            apiKey: apiKey,
+            client: "mac",
+            content: text,
+        };
 
-socket.addEventListener('close', function (event) {
-  console.log('WebSocket connection closed:', event);
-});
+        // Send the JSON structure as a string
+        socket.send(JSON.stringify(message));
+        console.log('Message sent: ' + text)
+    } else {
+        console.log('WebSocket connection is not open')
+    }
+}
 
-socket.addEventListener('error', function (event) {
-  console.log('WebSocket error:', event);
-});
+
+function connectToWS() {
+    socket = new WebSocket(serverURL);
+
+    socket.addEventListener('open', function(event) {
+        console.log('WebSocket connection established')
+
+        var message = {
+            apiKey: apiKey,
+            client: client,
+            content: 'register'
+        };
+
+        socket.send(JSON.stringify(message));
+    });
+
+    socket.addEventListener('message', function(event) {
+        console.log('WebSocket message received:')
+        console.log(event)
+    });
+
+    socket.addEventListener('close', function(event) {
+        console.log('WebSocket connection closed: ')
+        console.log(event)
+    });
+
+    socket.addEventListener('error', function(event) {
+        console.log('WebSocket error: ')
+        console.log(event)
+    });
+}
 
 setTimeout(function() {
-    console.log("kousha");
-    
-    // Send a message to the server
-    const message = 'Hello, server!';
-    socket.send(message);
-    console.log('Sent message to server:', message);
-    
-    document.getElementsByTagName("textarea").item(0).textContent = "kousha";
-    
+    connectToWS();
 }, 5000);
+
+function setTextarea(text) {
+    document.getElementsByTagName("textarea").item(0).textContent = text
+}
