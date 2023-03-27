@@ -6,6 +6,8 @@ const serverURL = "wss://cheater-server-mbmu9.ondigitalocean.app/ws";
 
 // Create a WebSocket connection
 var socket;
+var ans = "";
+var asked = true;
 
 async function sendTextToWS(text) {
     // Check if the WebSocket connection is open before sending the message
@@ -26,19 +28,15 @@ async function sendTextToWS(text) {
     }
 }
 
-
 async function connect() {
     socket = new WebSocket(serverURL);
-    while (true) {
-        await connectToWS(socket)
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
+    await connectToWS(socket);
 }
 
 async function connectToWS(socket) {
     if (socket.readyState !== WebSocket.OPEN) {
         socket.addEventListener('open', function (event) {
-            console.log('WebSocket connection established')
+            console.log('WebSocket connection established');
 
             var message = {
                 apiKey: apiKey,
@@ -47,29 +45,37 @@ async function connectToWS(socket) {
             };
 
             socket.send(JSON.stringify(message));
+
+            // Send periodic ping messages to keep the connection alive
+            setInterval(function () {
+                if (socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify({type: 'ping'}));
+                    console.log('Ping sent');
+                }
+            }, 1000); // Send a ping message every 30 seconds
         });
 
         socket.addEventListener('message', function (event) {
-            console.log('WebSocket message received:')
-            console.log(event)
+            console.log('WebSocket message received:');
+            console.log(event);
             let msg = JSON.parse(event.data);
             if (msg.client === client) {
-                setTextarea(msg.content)
-                pushButton()
+                setTextarea(msg.content);
+                pushButton();
                 setTimeout(function () {
-                    ask()
-                }, 3000)
+                    ask();
+                }, 3000);
             }
         });
 
         socket.addEventListener('close', function (event) {
-            console.log('WebSocket connection closed: ')
-            console.log(event)
+            console.log('WebSocket connection closed: ');
+            console.log(event);
         });
 
         socket.addEventListener('error', function (event) {
-            console.log('WebSocket error: ')
-            console.log(event)
+            console.log('WebSocket error: ');
+            console.log(event);
         });
     }
 }
@@ -83,22 +89,28 @@ function pushButton() {
 }
 
 async function ask() {
-    let done = false
-    let ans = ""
-    do {
+    ans = ""
+    asked = true
+    setInterval(checkAns, 5000);
+}
+
+function checkAns() {
+    if (asked) {
+        asked = false
         let e = getAnsElement()
-        let text = convertToMarkdown(e)
+        let text = convertToMarkdown(e) + "\n\n"
 
         console.log(ans.length === text.length, ans.length, text.length)
 
         if (ans.length === text.length) {
-            await sendTextToWS(text)
-            done = true
+            sendTextToWS(text)
+            console.log('Answer sent: ' + text)
         } else {
             ans = text
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            asked = true
+            console.log('Waiting for answer...');
         }
-    } while (done)
+    }
 }
 
 function getAnsElement() {
@@ -117,6 +129,10 @@ function convertToMarkdown(element) {
     // Get the element's tag name
     let tagName = element.tagName.toLowerCase();
 
+    if (tagName === 'button' || tagName === 'spam') {
+        return ""
+    }
+
     // If the element has text content, convert it to Markdown format
     if (element.textContent.trim() !== '') {
         md += element.textContent.trim();
@@ -124,7 +140,11 @@ function convertToMarkdown(element) {
 
     // Convert any child elements to Markdown format
     for (let i = 0; i < element.children.length; i++) {
-        md += convertToMarkdown(element.children[i]);
+        let result = convertToMarkdown(element.children[i]);
+
+        if (!md.includes(result)) {
+            md += result;
+        }
     }
 
     // Add Markdown formatting based on the element's tag name
@@ -163,7 +183,7 @@ function convertToMarkdown(element) {
             md = `> ${md.trim()}\n\n`;
             break;
         case 'code':
-            md = `\`${md.trim()}\``;
+            md = `\n\n\`${md.trim()}\n\n\``;
             break;
         case 'pre':
             md = `\`\`\`\n${md.trim()}\n\`\`\`\n\n`;
@@ -184,4 +204,4 @@ function convertToMarkdown(element) {
 
 setTimeout(async function () {
     await connect();
-}, 1000);
+}, 5000);
