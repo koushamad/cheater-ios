@@ -40,9 +40,11 @@ async function connectToWS(socket) {
             console.log(event);
             let msg = JSON.parse(event.data);
             if (msg.client === client) {
-                setTextarea(msg.content);
                 if (msg.type === 'ask'){
+                    setTextarea(msg.content);
                     pushButton();
+                }else {
+                    attachTextarea(msg.content);
                 }
             }
         });
@@ -65,6 +67,18 @@ function setTextarea(text) {
     }
 
     elementTextarea.value = text
+}
+
+function attachTextarea(text) {
+    if (elementTextarea === null) {
+        elementTextarea = document.getElementsByTagName("textarea").item(0);
+    }
+
+    if (elementTextarea.value === "") {
+        elementTextarea.value = text
+    }else {
+        elementTextarea.value += "\n" + text
+    }
 }
 
 function pushButton() {
